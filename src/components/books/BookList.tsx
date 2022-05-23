@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {FC} from 'react';
+import {FC, useEffect} from 'react';
 import Paper from '@mui/material/Paper';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -39,21 +39,18 @@ const columns: readonly Column[] = [
     label: 'Editorial',
     minWidth: 170,
     align: 'right',
-    format: (value: number) => value.toLocaleString('en-US'),
   },
   {
     id: 'autor',
     label: 'Author',
     minWidth: 170,
     align: 'right',
-    format: (value: number) => value.toLocaleString('en-US'),
   },
   {
     id: 'genero',
     label: 'Genre',
     minWidth: 170,
     align: 'right',
-    format: (value: number) => value.toFixed(2),
   },
   {
     id: 'paisautor',
@@ -74,7 +71,6 @@ const columns: readonly Column[] = [
     label: 'Year of Edition',
     minWidth: 170,
     align: 'right',
-    format: (value: number) => value.toFixed(2),
   },
   {
     id: 'precio',
@@ -88,19 +84,70 @@ const columns: readonly Column[] = [
     label: 'Available',
     minWidth: 170,
     align: 'right',
-    format: (value: number) => value.toFixed(2),
   },
 ];
+
+
+interface Data {
+  codigolibro: number;
+  titulo: string;
+  editorial: string;
+  autor: string;
+  genero: string;
+  paisautor: string;
+  numeropaginas: number;
+  anoedicion: string;
+  precio: string;
+  is_available: boolean;
+}
+
+function createData(
+  codigolibro: number,
+  titulo: string,
+  editorial: string,
+  autor: string,
+  genero: string,
+  paisautor: string,
+  numeropaginas: number,
+  anoedicion: string,
+  precio: string,
+  is_available: boolean
+): Data {
+  return {
+    codigolibro,
+    titulo,
+    editorial,
+    autor,
+    genero,
+    paisautor,
+    numeropaginas,
+    anoedicion,
+    precio,
+    is_available
+  };
+}
 
 interface Props {
   bookList: IBook[];
 }
 
 export const BookList: FC<Props> = ({bookList}) => {
+  useEffect(() => {
+    console.log('Updating BookList')
+    setRowsByParent()
+  }, [bookList]);
+
+  const [rows, setRows] = React.useState<Data[]>([]);
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
-  const rows = bookList;
+  const setRowsByParent = () => {
+    const rows = bookList.map((book => (
+      createData(book.codigolibro, book.titulo, book.editorial, book.autor, book.genero, book.paisautor, book.numeropaginas, book.anoedicion, book.precio, book.is_available)
+    )));
+    setRows(rows)
+  }
+
 
 
   const handleChangePage = (event: unknown, newPage: number) => {
@@ -111,6 +158,7 @@ export const BookList: FC<Props> = ({bookList}) => {
     setRowsPerPage(+event.target.value);
     setPage(0);
   };
+
 
   return (
     <Paper sx={{width: '100%', overflow: 'hidden'}}>
@@ -144,7 +192,7 @@ export const BookList: FC<Props> = ({bookList}) => {
                           {
                             column.format && typeof value === 'number'
                               ? column.format(value)
-                              : value
+                              : typeof value !== 'boolean' ? value : null
                           }
                         </TableCell>
                       );

@@ -4,26 +4,42 @@ import {BookList} from "../components/books";
 import AddIcon from '@mui/icons-material/Add';
 import BooksService from "../services/books.service";
 import {IBook} from "../interfaces";
+import {AddBookDialog} from "../components/books/AddBookDialog";
 
 
 export const Books: FC = (): ReactElement => {
-  const [bookList, setBookList] = useState<IBook[]>([]);
-
   useEffect(() => {
     getBooks()
   }, []);
 
+  const [bookList, setBookList] = useState<IBook[]>([]);
+  const [openAddBookDialog, setOpenAddBookDialog] = React.useState(false);
+
+
+
   function getBooks() {
+    console.log('Getting Books')
     BooksService.getBooks().then((response: any) => {
-        setBookList(response.data)
-      })
+      setBookList(response.data)
+    })
       .catch((e: Error) => {
         console.log(e);
       });
   }
 
+  const handleAddBook = () => {
+    console.log('before openAddBookDialog: ', openAddBookDialog)
+    setOpenAddBookDialog(!openAddBookDialog)
+    console.log('after openAddBookDialog: ', openAddBookDialog)
+  }
+
+  const handleDialogCallback = () => {
+    getBooks()
+  }
+
   return (
     <>
+      <AddBookDialog openFromParent={openAddBookDialog} parentCallback={handleDialogCallback}/>
       <Box
         sx={{
           flexGrow: 1,
@@ -35,7 +51,7 @@ export const Books: FC = (): ReactElement => {
         mb={2}
       >
         <Typography variant="h4">Books List</Typography>
-        <Button variant="outlined" startIcon={<AddIcon/>}>Add Book</Button>
+        <Button variant="outlined" startIcon={<AddIcon/>} onClick={handleAddBook}>Add Book</Button>
       </Box>
       <Box>
         <BookList bookList={bookList}/>
