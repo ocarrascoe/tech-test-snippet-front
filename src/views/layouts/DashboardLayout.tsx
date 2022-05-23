@@ -144,6 +144,9 @@ export const DashboardLayout: FC<Props> = ({children}) => {
             flexGrow: 1,
             height: '100vh',
             overflow: 'auto',
+            margin: '30px auto',
+            maxWidth: '1440px',
+            padding: '0px 45px'
           }}
         >
           <Toolbar/>
