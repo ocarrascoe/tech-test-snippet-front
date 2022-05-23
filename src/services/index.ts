@@ -1,1 +1,2 @@
-export * from './BookService'
+export * from './books.service'
+export * from './APIConfig'

@@ -9,8 +9,6 @@ import CssBaseline from "@mui/material/CssBaseline";
 import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
-import Badge from "@mui/material/Badge";
-import NotificationsIcon from "@mui/icons-material/Notifications";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import Divider from "@mui/material/Divider";
 import List from "@mui/material/List";
@@ -18,7 +16,7 @@ import Box from "@mui/material/Box";
 import {ItemList} from "../../components/ui";
 
 
-const drawerWidth: number = 240;
+const drawerWidth: number = 200;
 
 interface AppBarProps extends MuiAppBarProps {
   open?: boolean;
