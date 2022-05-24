@@ -16,6 +16,8 @@ import EditIcon from '@mui/icons-material/Edit';
 import {IconButton} from "@mui/material";
 import {EditBookDialog} from "./EditBookDialog";
 import BooksService from "../../services/books.service";
+import AssignmentReturnedIcon from '@mui/icons-material/AssignmentReturned';
+import BorrowsService from "../../services/borrows.service";
 
 type ColumnHeader =
   'titulo'
@@ -61,7 +63,7 @@ const columns: readonly Column[] = [
   },
   {
     id: 'paisautor',
-    label: 'Author Country',
+    label: "Author's Country",
     minWidth: 170,
     align: 'right',
     format: (value: number) => value.toFixed(2),
@@ -191,6 +193,16 @@ export const BookList: FC<Props> = ({bookList, parentCallback}) => {
       });
   }
 
+  const handleReturnBook = (book: any) => {
+    BorrowsService.returnBook(book.codigolibro).then((response: any) => {
+      console.log('returnBook response: ', response)
+      parentCallback()
+    })
+      .catch((e: Error) => {
+        console.log(e);
+      });
+  }
+
   return (
     <>
       <EditBookDialog book={selectedRow} openFromParent={openEditBookDialog} parentCallback={handleDialogCallback}/>
@@ -238,6 +250,11 @@ export const BookList: FC<Props> = ({bookList, parentCallback}) => {
                         );
                       })}
                       <TableCell key="Actions" align="center">
+                        {!row.is_available ?
+                          <IconButton onClick={() => handleReturnBook(row)} aria-label="delete">
+                            <AssignmentReturnedIcon/>
+                          </IconButton> : null
+                        }
                         <IconButton onClick={() => handleOpenEditDialog(row)} aria-label="delete">
                           <EditIcon/>
                         </IconButton>

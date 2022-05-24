@@ -3,7 +3,7 @@ import {Box, Button, Chip, Divider, Grid, Modal, TextField, Typography} from "@m
 import {useForm} from 'react-hook-form';
 import booksService from "../../services/books.service";
 import {ErrorOutline} from "@mui/icons-material";
-import {ICreateBook, IEditBook} from "../../interfaces";
+import {IEditBook} from "../../interfaces";
 import LoadingButton from '@mui/lab/LoadingButton';
 
 const dialogStyle = {
@@ -26,18 +26,45 @@ interface Props {
 
 export const EditBookDialog: FC<Props> = ({openFromParent, parentCallback, book}): ReactElement => {
   const [openEditBookDialog, setOpenEditBookDialog] = React.useState(false);
-  const {register, handleSubmit, formState: {errors}} = useForm<ICreateBook>();
   const [showError, setShowError] = React.useState(false);
   const [errorMessage, setErrorMessage] = React.useState('');
   const [price, setPrice] = React.useState("0.0");
   const [shouldDisable, setShouldDisable] = React.useState(false);
   const [loading, setLoading] = React.useState(false);
+  const {register, handleSubmit, formState: {errors}, reset} = useForm<IEditBook>({
+    defaultValues: {
+      titulo: book.titulo,
+      editorial: book.editorial,
+      autor: book.autor,
+      genero: book.genero,
+      paisautor: book.titulo,
+      numeropaginas: book.numeropaginas,
+      anoedicion: book.anoedicion,
+      precio: book.precio,
+    }
+  });
+
 
   useEffect(() => {
-    console.log('openFromParent EditBookDialog', openFromParent)
-    console.log('book from parent: ', book)
-    handleEditBook(openFromParent)
+    console.log('openFromParent EditBookDialog', openFromParent);
+    console.log('book from parent: ', book);
+    setShowError(false)
+    handleEditBook(openFromParent);
+    reset(getBookFromParent());
   }, [openFromParent]);
+
+  const getBookFromParent = (): IEditBook => {
+    return {
+      titulo: book.titulo,
+      editorial: book.editorial,
+      autor: book.autor,
+      genero: book.genero,
+      paisautor: book.paisautor,
+      numeropaginas: book.numeropaginas,
+      anoedicion: book.anoedicion,
+      precio: book.precio,
+    }
+  }
 
   const handleEditBook = (open: boolean = false) => {
     console.log('before handleEditBook:', open)
@@ -62,7 +89,7 @@ export const EditBookDialog: FC<Props> = ({openFromParent, parentCallback, book}
     setShowError(false);
     setLoading(true);
     setShouldDisable(true);
-    await booksService.editBook({
+    await booksService.editBook(book.codigolibro, {
       titulo,
       editorial,
       autor,
