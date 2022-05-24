@@ -15,3 +15,14 @@ export interface IBook {
   is_available: boolean;
   borrows?: IBorrow;
 }
+
+export interface ICreateBook {
+  titulo: string;
+  editorial: string;
+  autor: string;
+  genero: string;
+  paisautor: string;
+  numeropaginas: number;
+  anoedicion: number;
+  precio: number;
+}

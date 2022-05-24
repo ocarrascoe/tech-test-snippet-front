@@ -23,11 +23,13 @@ type ColumnHeader =
   | 'precio'
   | 'is_available';
 
+type AlignType = 'left' | 'center' | 'right';
+
 interface Column {
   id: ColumnHeader;
   label: string;
   minWidth?: number;
-  align?: 'right';
+  align?: AlignType;
   format?: (value: number) => string;
 }
 
@@ -83,7 +85,7 @@ const columns: readonly Column[] = [
     id: 'is_available',
     label: 'Available',
     minWidth: 170,
-    align: 'right',
+    align: 'center',
   },
 ];
 
