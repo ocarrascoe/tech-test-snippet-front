@@ -18,6 +18,8 @@ import {EditBookDialog} from "./EditBookDialog";
 import BooksService from "../../services/books.service";
 import AssignmentReturnedIcon from '@mui/icons-material/AssignmentReturned';
 import BorrowsService from "../../services/borrows.service";
+import BookIcon from '@mui/icons-material/Book';
+import {BorrowBookDialog} from "./BorrowBookDialog";
 
 type ColumnHeader =
   'titulo'
@@ -152,6 +154,7 @@ export const BookList: FC<Props> = ({bookList, parentCallback}) => {
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [selectedRow, setSelectedRow] = React.useState({});
   const [openEditBookDialog, setOpenEditBookDialog] = React.useState(false);
+  const [openBorrowBookDialog, setOpenBorrowBookDialog] = React.useState(false);
 
   const setRowsByParent = () => {
     const rows = bookList.map((book => (
@@ -159,7 +162,6 @@ export const BookList: FC<Props> = ({bookList, parentCallback}) => {
     )));
     setRows(rows)
   }
-
 
   const handleChangePage = (event: unknown, newPage: number) => {
     setPage(newPage);
@@ -173,10 +175,13 @@ export const BookList: FC<Props> = ({bookList, parentCallback}) => {
   const handleDialogCallback = () => {
     parentCallback()
     handleClose()
+    handleCloseBorrowDialog()
   }
 
   const handleOpen = () => setOpenEditBookDialog(true);
   const handleClose = () => setOpenEditBookDialog(false);
+  const handleOpenBorrowDialog = () => setOpenBorrowBookDialog(true);
+  const handleCloseBorrowDialog = () => setOpenBorrowBookDialog(false);
 
   const handleOpenEditDialog = (book: any) => {
     setSelectedRow(book)
@@ -203,9 +208,15 @@ export const BookList: FC<Props> = ({bookList, parentCallback}) => {
       });
   }
 
+  const handleBorrowBook = (book: any) => {
+    setSelectedRow(book)
+    handleOpenBorrowDialog()
+  }
+
   return (
     <>
       <EditBookDialog book={selectedRow} openFromParent={openEditBookDialog} parentCallback={handleDialogCallback}/>
+      <BorrowBookDialog book={selectedRow} openFromParent={openBorrowBookDialog} parentCallback={handleDialogCallback}/>
       <Paper sx={{width: '100%', overflow: 'hidden'}}>
         <TableContainer sx={{maxHeight: 440}}>
           <Table stickyHeader aria-label="sticky table">
@@ -250,10 +261,12 @@ export const BookList: FC<Props> = ({bookList, parentCallback}) => {
                         );
                       })}
                       <TableCell key="Actions" align="center">
-                        {!row.is_available ?
-                          <IconButton onClick={() => handleReturnBook(row)} aria-label="delete">
+                        {row.is_available ?
+                          <IconButton onClick={() => handleBorrowBook(row)} aria-label="delete">
+                            <BookIcon/>
+                          </IconButton> : <IconButton onClick={() => handleReturnBook(row)} aria-label="delete">
                             <AssignmentReturnedIcon/>
-                          </IconButton> : null
+                          </IconButton>
                         }
                         <IconButton onClick={() => handleOpenEditDialog(row)} aria-label="delete">
                           <EditIcon/>
