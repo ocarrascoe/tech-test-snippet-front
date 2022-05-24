@@ -16,7 +16,6 @@ export const Books: FC = (): ReactElement => {
   const [openAddBookDialog, setOpenAddBookDialog] = React.useState(false);
 
 
-
   function getBooks() {
     console.log('Getting Books')
     BooksService.getBooks().then((response: any) => {
@@ -54,7 +53,7 @@ export const Books: FC = (): ReactElement => {
         <Button variant="outlined" startIcon={<AddIcon/>} onClick={handleAddBook}>Add Book</Button>
       </Box>
       <Box>
-        <BookList bookList={bookList}/>
+        <BookList bookList={bookList} parentCallback={handleDialogCallback}/>
       </Box>
     </>
   );

@@ -11,6 +11,11 @@ import TableRow from '@mui/material/TableRow';
 import {IBook} from "../../interfaces";
 import DoneIcon from '@mui/icons-material/Done';
 import ClearIcon from '@mui/icons-material/Clear';
+import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
+import {IconButton} from "@mui/material";
+import {EditBookDialog} from "./EditBookDialog";
+import BooksService from "../../services/books.service";
 
 type ColumnHeader =
   'titulo'
@@ -86,7 +91,7 @@ const columns: readonly Column[] = [
     label: 'Available',
     minWidth: 170,
     align: 'center',
-  },
+  }
 ];
 
 
@@ -131,9 +136,10 @@ function createData(
 
 interface Props {
   bookList: IBook[];
+  parentCallback: any;
 }
 
-export const BookList: FC<Props> = ({bookList}) => {
+export const BookList: FC<Props> = ({bookList, parentCallback}) => {
   useEffect(() => {
     console.log('Updating BookList')
     setRowsByParent()
@@ -142,6 +148,8 @@ export const BookList: FC<Props> = ({bookList}) => {
   const [rows, setRows] = React.useState<Data[]>([]);
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
+  const [selectedRow, setSelectedRow] = React.useState({});
+  const [openEditBookDialog, setOpenEditBookDialog] = React.useState(false);
 
   const setRowsByParent = () => {
     const rows = bookList.map((book => (
@@ -149,7 +157,6 @@ export const BookList: FC<Props> = ({bookList}) => {
     )));
     setRows(rows)
   }
-
 
 
   const handleChangePage = (event: unknown, newPage: number) => {
@@ -161,59 +168,99 @@ export const BookList: FC<Props> = ({bookList}) => {
     setPage(0);
   };
 
+  const handleDialogCallback = () => {
+    parentCallback()
+    handleClose()
+  }
+
+  const handleOpen = () => setOpenEditBookDialog(true);
+  const handleClose = () => setOpenEditBookDialog(false);
+
+  const handleOpenEditDialog = (book: any) => {
+    setSelectedRow(book)
+    handleOpen()
+  }
+
+  const handleDeleteBook = (book: any) => {
+    BooksService.deleteBook(book.codigolibro).then((response: any) => {
+      console.log('deleteBook response: ', response)
+      parentCallback()
+    })
+      .catch((e: Error) => {
+        console.log(e);
+      });
+  }
 
   return (
-    <Paper sx={{width: '100%', overflow: 'hidden'}}>
-      <TableContainer sx={{maxHeight: 440}}>
-        <Table stickyHeader aria-label="sticky table">
-          <TableHead>
-            <TableRow>
-              {columns.map((column) => (
+    <>
+      <EditBookDialog book={selectedRow} openFromParent={openEditBookDialog} parentCallback={handleDialogCallback}/>
+      <Paper sx={{width: '100%', overflow: 'hidden'}}>
+        <TableContainer sx={{maxHeight: 440}}>
+          <Table stickyHeader aria-label="sticky table">
+            <TableHead>
+              <TableRow>
+                {columns.map((column) => (
+                  <TableCell
+                    key={column.id}
+                    align={column.align}
+                    style={{minWidth: column.minWidth}}
+                  >
+                    {column.label}
+                  </TableCell>
+                ))}
                 <TableCell
-                  key={column.id}
-                  align={column.align}
-                  style={{minWidth: column.minWidth}}
+                  key='actions'
+                  align='center'
+                  style={{minWidth: 100}}
                 >
-                  {column.label}
+                  Actions
                 </TableCell>
-              ))}
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {rows
-              .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-              .map((row) => {
-                return (
-                  <TableRow hover role="checkbox" tabIndex={-1} key={row?.codigolibro}>
-                    {columns.map((column) => {
-                      const value = row[column.id];
-                      return (
-                        <TableCell key={column.id} align={column.align}>
-                          {column.id === 'is_available' ? value ? <DoneIcon style={{color: 'green'}}/> :
-                            <ClearIcon style={{color: 'red'}}/> : null}
-                          {
-                            column.format && typeof value === 'number'
-                              ? column.format(value)
-                              : typeof value !== 'boolean' ? value : null
-                          }
-                        </TableCell>
-                      );
-                    })}
-                  </TableRow>
-                );
-              })}
-          </TableBody>
-        </Table>
-      </TableContainer>
-      <TablePagination
-        rowsPerPageOptions={[10, 25, 100]}
-        component="div"
-        count={rows.length}
-        rowsPerPage={rowsPerPage}
-        page={page}
-        onPageChange={handleChangePage}
-        onRowsPerPageChange={handleChangeRowsPerPage}
-      />
-    </Paper>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {rows
+                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                .map((row) => {
+                  return (
+                    <TableRow hover role="checkbox" tabIndex={-1} key={row?.codigolibro}>
+                      {columns.map((column) => {
+                        const value = row[column.id];
+                        return (
+                          <TableCell key={column.id} align={column.align}>
+                            {column.id === 'is_available' ? value ? <DoneIcon style={{color: 'green'}}/> :
+                              <ClearIcon style={{color: 'red'}}/> : null}
+                            {
+                              column.format && typeof value === 'number'
+                                ? column.format(value)
+                                : typeof value !== 'boolean' ? value : null
+                            }
+                          </TableCell>
+                        );
+                      })}
+                      <TableCell key="Actions" align="center">
+                        <IconButton onClick={() => handleOpenEditDialog(row)} aria-label="delete">
+                          <EditIcon/>
+                        </IconButton>
+                        <IconButton onClick={() => handleDeleteBook(row)} aria-label="delete">
+                          <DeleteIcon/>
+                        </IconButton>
+                      </TableCell>
+                    </TableRow>
+                  );
+                })}
+            </TableBody>
+          </Table>
+        </TableContainer>
+        <TablePagination
+          rowsPerPageOptions={[10, 25, 100]}
+          component="div"
+          count={rows.length}
+          rowsPerPage={rowsPerPage}
+          page={page}
+          onPageChange={handleChangePage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
+        />
+      </Paper>
+    </>
   );
 }

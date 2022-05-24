@@ -1,5 +1,5 @@
 import {API} from './index';
-import {IBook, ICreateBook} from "../interfaces";
+import {IBook, ICreateBook, IEditBook} from "../interfaces";
 
 class BooksService {
   getBooks() {
@@ -7,6 +7,12 @@ class BooksService {
   }
   createBook(book: ICreateBook) {
     return API.post(`books/`, book)
+  }
+  editBook(book: IEditBook) {
+    return API.post(`books/`, book)
+  }
+  deleteBook(id: number) {
+    return API.delete<any>(`/books/${id}`);
   }
 }
 

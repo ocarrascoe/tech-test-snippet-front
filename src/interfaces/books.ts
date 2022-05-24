@@ -26,3 +26,14 @@ export interface ICreateBook {
   anoedicion: number;
   precio: number;
 }
+
+export interface IEditBook {
+  titulo?: string;
+  editorial?: string;
+  autor?: string;
+  genero?: string;
+  paisautor?: string;
+  numeropaginas?: number;
+  anoedicion?: number;
+  precio?: number;
+}
