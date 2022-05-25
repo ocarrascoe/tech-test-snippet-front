@@ -1,18 +1,13 @@
-import React, { ReactElement, FC } from "react";
-import { Box, Typography } from "@mui/material";
+import React, {FC, ReactElement} from "react";
+import {Grid} from "@mui/material";
+import {InfoUsers} from "../components/users";
 
 export const Users: FC<any> = (): ReactElement => {
   return (
-    <Box
-      sx={{
-        flexGrow: 1,
-        backgroundColor: "whitesmoke",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-      }}
-    >
-      <Typography variant="h3">Users</Typography>
-    </Box>
+    <Grid container spacing={2} justifyContent="center" alignItems="center">
+      <Grid item xs={12}>
+        <InfoUsers/>
+      </Grid>
+    </Grid>
   );
 };

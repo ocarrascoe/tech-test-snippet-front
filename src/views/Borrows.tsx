@@ -1,18 +1,13 @@
-import React, { ReactElement, FC } from "react";
-import { Box, Typography } from "@mui/material";
+import React, {FC, ReactElement} from "react";
+import {Grid} from "@mui/material";
+import {InfoBorrows} from "../components/borrows";
 
 export const Borrows: FC<any> = (): ReactElement => {
   return (
-    <Box
-      sx={{
-        flexGrow: 1,
-        backgroundColor: "whitesmoke",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-      }}
-    >
-      <Typography variant="h3">Borrows</Typography>
-    </Box>
+    <Grid container spacing={2} justifyContent="center" alignItems="center">
+      <Grid item xs={12}>
+        <InfoBorrows/>
+      </Grid>
+    </Grid>
   );
 };

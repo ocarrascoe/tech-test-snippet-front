@@ -1,18 +1,17 @@
-import React, { ReactElement, FC } from "react";
-import { Box, Typography } from "@mui/material";
+import React, {FC, ReactElement} from "react";
+import {Grid, Typography} from "@mui/material";
+import {InfoHome} from "../components/home";
+
 
 export const Home: FC<any> = (): ReactElement => {
   return (
-    <Box
-      sx={{
-        flexGrow: 1,
-        backgroundColor: "whitesmoke",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-      }}
-    >
-      <Typography variant="h3">Home</Typography>
-    </Box>
+    <Grid container spacing={2} justifyContent="center" alignItems="center">
+      <Grid item xs={12}>
+        <Typography variant="h3" align='center'>¡Bienvenidos!</Typography>
+      </Grid>
+      <Grid item xs={12}>
+        <InfoHome/>
+      </Grid>
+    </Grid>
   );
 };
