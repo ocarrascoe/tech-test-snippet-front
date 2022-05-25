@@ -22,7 +22,7 @@ const dialogStyle = {
 
 interface Props {
   book: any;
-  openFromParent?: boolean;
+  openFromParent: boolean;
   parentCallback: any;
 }
 
@@ -43,13 +43,10 @@ export const BorrowBookDialog: FC<Props> = ({openFromParent, parentCallback, boo
     }
   });
 
-
   useEffect(() => {
-    console.log('openFromParent EditBookDialog', openFromParent);
-    console.log('book from parent: ', book);
+    console.log('BorrowBookDialog render')
     setShowError(false)
-    handleEditBook(openFromParent);
-    getUsers()
+    setOpenFromParent(openFromParent);
     getBookFromParent()
   }, [openFromParent]);
 
@@ -76,21 +73,24 @@ export const BorrowBookDialog: FC<Props> = ({openFromParent, parentCallback, boo
     }
   }
 
+  const setOpenFromParent = (value: boolean) => {
+    setOpenEditBookDialog(value)
+    if (value) {
+      getUsers()
+    }
+  }
+
   const handleEditBook = (open: boolean = false) => {
-    console.log('before handleEditBook:', open)
     setOpenEditBookDialog(open)
     if (!open) {
       parentCallback()
     }
-    console.log('openEditBookDialog:', openEditBookDialog)
-    console.log('after handleEditBook:', open)
   }
 
   const onEditBook = async ({user_id}: FormData) => {
     setShowError(false);
     setLoading(true);
     setShouldDisable(true);
-    console.log('onEditBook user_id: ', user_id)
     await BorrowsService.createBorrow({
       user_id: user_id,
       book_id: book.codigolibro

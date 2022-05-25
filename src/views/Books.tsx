@@ -4,11 +4,12 @@ import {BookList} from "../components/books";
 import AddIcon from '@mui/icons-material/Add';
 import BooksService from "../services/books.service";
 import {IBook} from "../interfaces";
-import {AddBookDialog} from "../components/books/AddBookDialog";
+import {AddBookDialog} from "../components/books";
 
 
 export const Books: FC = (): ReactElement => {
   useEffect(() => {
+    console.log('Books render')
     getBooks()
   }, []);
 
@@ -27,9 +28,7 @@ export const Books: FC = (): ReactElement => {
   }
 
   const handleAddBook = () => {
-    console.log('before openAddBookDialog: ', openAddBookDialog)
     setOpenAddBookDialog(!openAddBookDialog)
-    console.log('after openAddBookDialog: ', openAddBookDialog)
   }
 
   const handleDialogCallback = () => {

@@ -6,21 +6,28 @@ import GitHubIcon from '@mui/icons-material/GitHub';
 const card = (
   <React.Fragment>
     <CardContent style={{paddingLeft: 40, paddingRight: 40}}>
-      <Typography sx={{fontSize: 30}} color="text.secondary" align="center" gutterBottom>
+      <Typography sx={{fontSize: 35}} color="text.secondary" align="center" gutterBottom>
         Prueba técnica Snippet
       </Typography>
-      <Typography variant="body1" component="div">
+      <Typography variant="body2" component="div">
         El presente proyecto se encuentra en su totalidad en inglés a excepción de estos cuadros explicativos (este, las
         secciones Borrows y Users). Estas secciones no eran solicitadas en la prueba, pero la base fue realizada para
         dar a entender el pensamiento de escalabilidad.
       </Typography>
       <br/>
-      <Typography variant="body1" component="div">
+      <Typography variant="body2" component="div">
         He utilizado Material UI, una template de Material UI y conocimiento adquirido de un <a
         href="https://www.udemy.com/course/nextjs-fh/" target="_blank"
         rel="noopener">curso de NextJS</a> que estoy realizando, si bien este proyecto no está construido con NextJS, al
         ser un framework de React es bastante fácil de adaptar lo aprendido. Todo está realizado con Typescript aunque
         no hay problema en trabajar en JavaScript si es necesario.
+      </Typography>
+      <br/>
+      <Typography variant="body2" component="div">
+        Cabe destacar que sé hacer uso de memo, useMemo y useCallback, contextos (en específico cree un contexto para la
+        UI y finalmente no lo utilice) e incluso el uso de redux (normalmente hago uso del patró ducks para esto
+        último), pero para este proyecto no fue realmente necesario, con las comunicaciones de padre a hijo y viceversa
+        fue más que suficiente.
       </Typography>
       <Typography sx={{mt: 2, mb: 1.5}} variant="h6" color="text.secondary" align="center">
         Links Importantes

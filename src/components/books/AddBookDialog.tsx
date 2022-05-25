@@ -19,14 +19,14 @@ const dialogStyle = {
 };
 
 interface Props {
-  openFromParent?: boolean;
+  openFromParent: boolean;
   parentCallback: any;
 }
 
 export const AddBookDialog: FC<Props> = ({openFromParent, parentCallback}): ReactElement => {
   useEffect(() => {
-    console.log('openFromParent AddBookDialog', openFromParent)
-    handleAddBook(openFromParent)
+    console.log('AddBookDialog render')
+    setOpenFromParent(openFromParent)
   }, [openFromParent]);
 
   const [openAddBookDialog, setOpenAddBookDialog] = React.useState(false);
@@ -36,6 +36,10 @@ export const AddBookDialog: FC<Props> = ({openFromParent, parentCallback}): Reac
   const [price, setPrice] = React.useState("0.0");
   const [shouldDisable, setShouldDisable] = React.useState(false);
   const [loading, setLoading] = React.useState(false);
+
+  const setOpenFromParent = (value: boolean) => {
+    setOpenAddBookDialog(value)
+  }
 
   const handleAddBook = (open: boolean = false) => {
     setOpenAddBookDialog(open)
