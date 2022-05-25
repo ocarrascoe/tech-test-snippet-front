@@ -145,7 +145,7 @@ interface Props {
 
 export const BookList: FC<Props> = ({bookList, parentCallback}) => {
   useEffect(() => {
-    console.log('Updating BookList')
+    console.log('BookList render')
     setRowsByParent()
   }, [bookList]);
 

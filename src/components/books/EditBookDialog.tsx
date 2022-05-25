@@ -20,7 +20,7 @@ const dialogStyle = {
 
 interface Props {
   book: any;
-  openFromParent?: boolean;
+  openFromParent: boolean;
   parentCallback: any;
 }
 
@@ -46,12 +46,15 @@ export const EditBookDialog: FC<Props> = ({openFromParent, parentCallback, book}
 
 
   useEffect(() => {
-    console.log('openFromParent EditBookDialog', openFromParent);
-    console.log('book from parent: ', book);
+    console.log('EditBookDialog render')
     setShowError(false)
-    handleEditBook(openFromParent);
+    setOpenFromParent(openFromParent);
     reset(getBookFromParent());
   }, [openFromParent]);
+
+  const setOpenFromParent = (value: boolean) => {
+    setOpenEditBookDialog(value)
+  }
 
   const getBookFromParent = (): IEditBook => {
     return {
@@ -67,13 +70,10 @@ export const EditBookDialog: FC<Props> = ({openFromParent, parentCallback, book}
   }
 
   const handleEditBook = (open: boolean = false) => {
-    console.log('before handleEditBook:', open)
     setOpenEditBookDialog(open)
     if (!open) {
       parentCallback()
     }
-    console.log('openEditBookDialog:', openEditBookDialog)
-    console.log('after handleEditBook:', open)
   }
 
   const onEditBook = async ({
