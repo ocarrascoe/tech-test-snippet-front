@@ -18,7 +18,7 @@ const card = (
       <Typography variant="body1" component="div">
         De igual manera se activó el administrador de Django, por lo que se puede hacer uso de este para interactruar
         a mayor nivel con esta entidad, para ello ingresar a <a href="http://localhost:8000/admin/user/user/" target="_blank"
-        rel="noopener">Administrador Django - Users</a> con el backend iniciado.
+        rel="noreferrer">Administrador Django - Users</a> con el backend iniciado.
       </Typography>
       <Typography sx={{mt: 2, mb: 1.5}} variant="h6" color="text.secondary" align="center">
         Credenciales del administrador de Django
@@ -32,7 +32,7 @@ const card = (
         <Grid container spacing={4} direction="column" justifyContent="center" alignItems="center">
           <Grid item xs={12}>
             <Link href="https://www.linkedin.com/in/omar-carrasco-escudero-958a991a9/" underline="none" target="_blank"
-                  rel="noopener">
+                  rel="noreferrer">
               <Button variant="outlined" startIcon={<LinkedInIcon/>}>
                 LinkedIn
               </Button>
@@ -40,13 +40,13 @@ const card = (
           </Grid>
           <Grid item xs={6}>
             <Link href="https://github.com/ocarrascoe/tech-test-snippet-front" underline="none" target="_blank"
-                  rel="noopener">
+                  rel="noreferrer">
               <Button variant="outlined" startIcon={<GitHubIcon/>} style={{marginRight: 10}}>
                 Frontend
               </Button>
             </Link>
             <Link href="https://github.com/ocarrascoe/tech-test-snippet-back" underline="none" target="_blank"
-                  rel="noopener">
+                  rel="noreferrer">
               <Button variant="outlined" startIcon={<GitHubIcon/>} style={{marginLeft: 10}}>
                 Backend
               </Button>
